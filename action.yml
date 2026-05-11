@@ -1,5 +1,5 @@
 name: 'Permi Security Scanner'
-description: 'AI-powered vulnerability scanner for your codebase. Finds SQL injection, XSS, hardcoded secrets, USSD vulnerabilities, and more. Built in Nigeria.'
+description: 'AI-powered vulnerability scanner. Finds SQL injection, XSS, hardcoded secrets, and USSD vulnerabilities.'
 
 author: 'Peter Nasarah Dashe'
 
