@@ -1,0 +1,56 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# Example 2 — Advanced setup with all options
+# Save as: .github/workflows/security.yml
+# ─────────────────────────────────────────────────────────────────────────────
+
+name: Permi Security Scan
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  schedule:
+    # Run every Monday at 9am — weekly full scan
+    - cron: '0 9 * * 1'
+
+jobs:
+  security:
+    runs-on: ubuntu-latest
+    name: Vulnerability Scan
+
+    permissions:
+      contents: read
+      pull-requests: write
+      issues: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Permi Security Scan
+        id: scan
+        uses: Peternasarah/permi-action@v1
+        with:
+          path: '.'
+          severity: medium           # Fail on medium AND high
+          fail_on_findings: true
+          comment_on_pr: true
+          openrouter_api_key: ${{ secrets.OPENROUTER_API_KEY }}
+
+      - name: Print scan results
+        if: always()
+        run: |
+          echo "Findings   : ${{ steps.scan.outputs.findings_count }}"
+          echo "High       : ${{ steps.scan.outputs.high_count }}"
+          echo "Medium     : ${{ steps.scan.outputs.medium_count }}"
+          echo "Low        : ${{ steps.scan.outputs.low_count }}"
+          echo "Scan passed: ${{ steps.scan.outputs.scan_passed }}"
+
+      - name: Upload report as artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: permi-security-report
+          path: ${{ steps.scan.outputs.report_path }}
+          retention-days: 30

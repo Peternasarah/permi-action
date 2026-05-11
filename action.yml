@@ -1,0 +1,76 @@
+name: 'Permi Security Scanner'
+description: 'AI-powered vulnerability scanner for your codebase. Finds SQL injection, XSS, hardcoded secrets, USSD vulnerabilities, and more. Built in Nigeria.'
+
+author: 'Peter Nasarah Dashe'
+
+branding:
+  icon: 'shield'
+  color: 'blue'
+
+inputs:
+  path:
+    description: 'Path to scan (relative to repo root). Defaults to the entire repository.'
+    required: false
+    default: '.'
+
+  severity:
+    description: 'Minimum severity to report and fail on. Options: high, medium, low, all'
+    required: false
+    default: 'high'
+
+  fail_on_findings:
+    description: 'Fail the workflow if findings are found at or above the severity threshold. Set to false to report only.'
+    required: false
+    default: 'true'
+
+  openrouter_api_key:
+    description: 'OpenRouter API key for AI false-positive filtering. Get a free key at openrouter.ai. If not provided, runs in offline mode (no AI filtering).'
+    required: false
+    default: ''
+
+  output_format:
+    description: 'Output format for the scan results. Options: human, json, markdown'
+    required: false
+    default: 'human'
+
+  comment_on_pr:
+    description: 'Post scan results as a comment on pull requests. Requires write permissions.'
+    required: false
+    default: 'true'
+
+  permi_version:
+    description: 'Permi version to install. Defaults to latest.'
+    required: false
+    default: 'latest'
+
+outputs:
+  findings_count:
+    description: 'Total number of real findings after AI filtering'
+
+  high_count:
+    description: 'Number of high severity findings'
+
+  medium_count:
+    description: 'Number of medium severity findings'
+
+  low_count:
+    description: 'Number of low severity findings'
+
+  scan_passed:
+    description: 'true if no findings at or above the severity threshold, false otherwise'
+
+  report_path:
+    description: 'Path to the generated scan report file'
+
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
+  env:
+    OPENROUTER_API_KEY: ${{ inputs.openrouter_api_key }}
+    PERMI_SCAN_PATH: ${{ inputs.path }}
+    PERMI_SEVERITY: ${{ inputs.severity }}
+    PERMI_FAIL_ON_FINDINGS: ${{ inputs.fail_on_findings }}
+    PERMI_OUTPUT_FORMAT: ${{ inputs.output_format }}
+    PERMI_COMMENT_ON_PR: ${{ inputs.comment_on_pr }}
+    PERMI_VERSION: ${{ inputs.permi_version }}
+    GITHUB_TOKEN: ${{ github.token }}

@@ -1,0 +1,31 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# Example 1 — Basic setup (copy this into your repo)
+# Save as: .github/workflows/security.yml
+# ─────────────────────────────────────────────────────────────────────────────
+
+name: Security Scan
+
+on:
+  push:
+    branches: [main, develop, master]
+  pull_request:
+    branches: [main, develop, master]
+
+jobs:
+  permi-scan:
+    runs-on: ubuntu-latest
+    name: Permi Security Scan
+
+    permissions:
+      contents: read
+      pull-requests: write
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Run Permi Security Scanner
+        uses: Peternasarah/permi-action@v1
+        with:
+          severity: high
+          openrouter_api_key: ${{ secrets.OPENROUTER_API_KEY }}
