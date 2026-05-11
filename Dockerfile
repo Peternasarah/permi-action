@@ -1,6 +1,6 @@
 FROM python:3.11-slim
 
-LABEL maintainer="Peter Nasarah Dashe <peternasarah@gmail.com>"
+LABEL maintainer="Peter Nasarah Dashe <dashenasarahpeter@gmail.com>"
 LABEL description="Permi Security Scanner — AI-powered vulnerability scanner for Nigerian developers"
 
 # Install system dependencies
