@@ -73,4 +73,4 @@ runs:
     PERMI_OUTPUT_FORMAT: ${{ inputs.output_format }}
     PERMI_COMMENT_ON_PR: ${{ inputs.comment_on_pr }}
     PERMI_VERSION: ${{ inputs.permi_version }}
-    GITHUB_TOKEN: ${{ github.token }}
+    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
