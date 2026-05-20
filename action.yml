@@ -1,5 +1,5 @@
 name: 'Permi Security Scanner'
-description: 'AI-powered vulnerability scanner for your codebase. Finds SQL injection, XSS, hardcoded secrets, USSD vulnerabilities, and more. Built in Nigeria.'
+description: 'The security signal filter for African fintech engineering teams — precision-first AppSec that removes false positives so developers only see findings that matter.'
 
 author: 'Peter Nasarah Dashe'
 
@@ -43,6 +43,10 @@ inputs:
     required: false
     default: 'latest'
 
+  token:
+    description: 'GitHub token for API calls'
+    required: true
+
 outputs:
   findings_count:
     description: 'Total number of real findings after AI filtering'
@@ -73,4 +77,4 @@ runs:
     PERMI_OUTPUT_FORMAT: ${{ inputs.output_format }}
     PERMI_COMMENT_ON_PR: ${{ inputs.comment_on_pr }}
     PERMI_VERSION: ${{ inputs.permi_version }}
-    GITHUB_TOKEN: ${{ github.token }}
+    GITHUB_TOKEN: ${{ inputs.token }}
